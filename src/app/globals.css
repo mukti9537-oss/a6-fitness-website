@@ -1,2 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
 @import "tailwindcss";
+
+.oswald-font{
+  font-family: "Oswald", sans-serif;
+}
+
+
 @plugin "daisyui";
+
+body{
+  background-color: #000000;
+  color: white;
+}
+
+

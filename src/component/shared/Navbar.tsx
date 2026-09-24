@@ -3,11 +3,12 @@ import Link from 'next/link';
 import logo from "@/assets/logo.png";
 import React from 'react';
 
+
 const Navbar = () => {
     return (
-        <nav className="bg-base-100 border border-gray-700 shadow-lg">
+        <nav className="bg-[#0C0D10] border border-gray-800 shadow-lg">
 
-            <div className="navbar max-w-7xl mx-auto px-4">
+            <div className="navbar  ">
                 {/* mobile page */}
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -26,8 +27,10 @@ const Navbar = () => {
                             </li>
                         </ul>
                     </div>
+                    <div className="flex items-center gap-1 ">
                     <Image src={logo} alt='FitlOg' />
-                    <a className="btn btn-ghost text-xl">FITLOG</a>
+                    <span className="oswald-font text-xl font-bold">FITLOG</span>
+                    </div>
                 </div>
 
                 {/* website page */}
@@ -42,17 +45,17 @@ const Navbar = () => {
                         </li>
                     </ul>
                 </div>
-                <div className="navbar-end">
+                <div className="navbar-end gap-4">
 
                     <Link href="/my-plan"
-                        className=" flex items-center gap-2 btn">
+                        className=" flex items-center gap-2">
                         <span>Plan</span>
-                        <span className="rounded-full bg-[#ccff00] px-1 text-black font-bold">0</span>
+                        <span className="rounded-full bg-[#ccff00] px-2 text-black font-bold">0</span>
                     </Link>
                     <Link href="/my-plan"
-                        className=" flex items-center gap-2 btn">
+                        className=" flex items-center gap-2">
                         <span>Saved</span>
-                        <span className="rounded-full px-1 border border-[#2D313B] text-[#D1D5DB] ">0</span>
+                        <span className="rounded-full px-2 border border-[#2D313B] text-[#D1D5DB] ">0</span>
                     </Link>
 
                 </div>
