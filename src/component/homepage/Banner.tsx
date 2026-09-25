@@ -5,10 +5,11 @@ import bannerImg from "@/assets/banner.png";
 const Banner = () => {
   return (
     <section className="px-4 py-10 md:py-16">
-      <div className="bg-base-300 rounded-2xl min-h-105 flex justify-between gap-6 items-center px-10 ">
+      <div className="bg-base-300 rounded-2xl min-h-105 flex justify-between gap-6 items-center
+       flex-col md:flex-row px-6 md:px-10 py-8 md:py-0 ">
 
         {/* Content */}
-        <div className="space-y-4 text-center md:text-left">
+        <div className="space-y-4 text-center md:text-left w-full md:w-1/2">
 
           <h4 className=" space-y-8 font-medium text-[#ccff00]">
             WORKOUT LIBRARY
@@ -26,18 +27,19 @@ const Banner = () => {
           </p>
 
           <a href="#library"
-            className="btn  bg-[#ccff00]  text-black">
+            className="btn  bg-[#ccff00] text-black">
             BROWSE WORKOUTS
           </a>
 
         </div>
 
         {/* Image */}
-        <div className="relative overflow-hidden rounded-2xl ">
+        <div className="relative overflow-hidden rounded-2xl w-full md:w-1/2 flex justify-end ">
           <Image
             src={bannerImg}
             alt="Fitness image"
             priority
+            className="w-56 md:w-80 h-auto"
           />
         </div>
       </div>
