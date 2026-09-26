@@ -1,12 +1,20 @@
+"use client";
 import Image from 'next/image';
 import Link from 'next/link';
 import logo from "@/assets/logo.png";
+
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 
 const Navbar = () => {
+    const pathname = usePathname();
+
+    const isWorkoutActive = pathname === "/";
+    const isMyPlanActive = pathname === "/my-plan"
+
     return (
-        <nav className="bg-[#0C0D10] border border-gray-800 shadow-lg">
+        <nav className="sticky top-0 bg-[#0C0D10] border border-gray-800 shadow-lg">
 
             <div className="navbar  ">
                 {/* mobile page */}
@@ -19,17 +27,29 @@ const Navbar = () => {
                             tabIndex={-1}
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                             <li>
-                                <Link href="/workout">Workout</Link>
+                                <Link href="/"
+                                className={`px-7 py-7 rounded-full text-sm transition
+                                 ${isWorkoutActive 
+                                    ? "bg-[#172408] text-[#ccff00]"
+                                    : "text-[#D1D5DB] hover:text-white"
+                                 }`}
+                                >Workout</Link>
                             </li>
 
                             <li>
-                                <Link href="/My Plan">My Plan</Link>
+                                <Link href="/My Plan"
+                                className={`px-7 py-7 rounded-full text-sm transition
+                                 ${isMyPlanActive 
+                                    ? "bg-[#172408] text-[#ccff00]"
+                                    : "text-[#D1D5DB] hover:text-white"
+                                 }`}
+                                >My Plan</Link>
                             </li>
                         </ul>
                     </div>
                     <div className="flex items-center gap-1 ">
-                    <Image src={logo} alt='FitlOg' />
-                    <span className="oswald-font text-xl font-bold">FITLOG</span>
+                        <Image src={logo} alt='FitlOg' />
+                        <span className="oswald-font text-xl font-bold">FITLOG</span>
                     </div>
                 </div>
 
@@ -38,10 +58,22 @@ const Navbar = () => {
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
                         <li>
-                            <Link href="/workout">Workout</Link>
+                            <Link href="/"
+                             className={`px-3 py-1 rounded-full text-sm transition
+                                 ${isWorkoutActive 
+                                    ? "bg-[#172408] text-[#ccff00]"
+                                    : "text-[#D1D5DB] hover:text-white"
+                                 }`}
+                            >Workout</Link>
                         </li>
                         <li>
-                            <Link href="/my-plan">My Plan</Link>
+                            <Link href="/my-plan"
+                            className={`px-3 py-1 rounded-full text-sm transition
+                                 ${isMyPlanActive 
+                                    ? "bg-[#172408] text-[#ccff00]"
+                                    : "text-[#D1D5DB] hover:text-white"
+                                 }`}
+                            >My Plan</Link>
                         </li>
                     </ul>
                 </div>

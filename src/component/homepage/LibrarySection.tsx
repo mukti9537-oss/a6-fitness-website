@@ -1,5 +1,6 @@
 import React from 'react';
 import LibraryCard from '../shared/LibraryCard';
+import { Ilibrary } from '@/types/librarycard.type';
 
 const getLibrary = async () => {
     const res = await fetch("https://api.abcz.workers.dev/api/fitlog");
@@ -12,7 +13,7 @@ const LibrarySection = async () => {
     console.log(libraryData , "LibraryData")
 
     return (
-        <section className="px-4  ">
+        <section id="librarySection" className="px-4  ">
             {/* Section Title */}
             <div className="">
                 <h1 className=" oswald-font text-3xl font-bold text-[#FFFFFF]">
@@ -28,7 +29,7 @@ const LibrarySection = async () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
 
-                {libraryData.map((library , ind) => {
+                {libraryData.map((library: Ilibrary , ind:number) => {
                     return <LibraryCard key={ind} library = {library} />    
                 })} 
 

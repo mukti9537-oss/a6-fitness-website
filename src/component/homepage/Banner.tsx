@@ -26,7 +26,7 @@ const Banner = () => {
             lock it into todays plan, and watch the weeks work add up.
           </p>
 
-          <a href="#library"
+          <a href="#librarySection"
             className="btn  bg-[#ccff00] text-black">
             BROWSE WORKOUTS
           </a>
