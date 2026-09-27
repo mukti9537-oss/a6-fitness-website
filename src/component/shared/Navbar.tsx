@@ -5,6 +5,7 @@ import logo from "@/assets/logo.png";
 
 import { usePathname } from 'next/navigation';
 import React from 'react';
+import { usePlan } from '@/context/PlanContext';
 
 
 const Navbar = () => {
@@ -12,6 +13,7 @@ const Navbar = () => {
 
     const isWorkoutActive = pathname === "/";
     const isMyPlanActive = pathname === "/My-plan"
+    const {plan , saved} = usePlan();
 
     return (
         <nav className="sticky top-0 bg-[#0C0D10] border border-gray-800 shadow-lg">
@@ -82,12 +84,12 @@ const Navbar = () => {
                     <Link href="/My-plan"
                         className=" flex items-center gap-2">
                         <span>Plan</span>
-                        <span className="rounded-full bg-[#ccff00] px-2 text-black font-bold">0</span>
+                        <span className="rounded-full bg-[#ccff00] px-2 text-black font-bold">{plan.length}</span>
                     </Link>
                     <Link href="/My-plan"
                         className=" flex items-center gap-2">
                         <span>Saved</span>
-                        <span className="rounded-full px-2 border border-[#2D313B] text-[#D1D5DB] ">0</span>
+                        <span className="rounded-full px-2 border border-[#2D313B] text-[#D1D5DB] ">{saved.length}</span>
                     </Link>
 
                 </div>
