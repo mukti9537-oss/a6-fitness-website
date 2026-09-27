@@ -82,12 +82,12 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end gap-4">
 
-                    <Link href="/My-plan"
+                    <Link href="/My-Plan"
                         className=" flex items-center gap-2">
                         <span>Plan</span>
                         <span className="rounded-full bg-[#ccff00] px-2 text-black font-bold">{plan.length}</span>
                     </Link>
-                    <Link href="/My-plan"
+                    <Link href="/My-Plan"
                         className=" flex items-center gap-2">
                         <span>Saved</span>
                         <span className="rounded-full px-2 border border-[#2D313B] text-[#D1D5DB] ">{saved.length}</span>

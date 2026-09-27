@@ -65,7 +65,7 @@ const MyPlanPage = () => {
     }
 
     return (
-        <main className="min-h-screen bg-[#0B0D10] px-4 py-10 text-white sm:px-6 lg:px-8">
+        <main className="min-h-screen bg-[#0B0D10] px-4 py-8 text-white sm:px-6 sm:py-10 lg:px-8">
 
 
             {/* header */}
@@ -73,7 +73,7 @@ const MyPlanPage = () => {
                 <h1 className="oswald-font text-xl font-black tracking-wide sm:text-4xl">
                     My Plan
                 </h1>
-                <p className="mt-2 mb-2 text-sm text-[#9CA#AF] sm:text-base">
+                <p className="mt-2 max-w-xl text-xs text-[#9CA3AF] sm:text-sm">
                     Cap of five lifts for today. Finish them, then load more.
                 </p>
             </div>
@@ -204,9 +204,9 @@ const MyPlanPage = () => {
                         return (
                             <div
                                 key={library.id}
-                                className="flex h-[78] w-full items-center rounded-xl border border-[#20242E] bg-[#111318] px-3">
+                                className="sm:flex sm:min-h-[78] w-full sm:items-center rounded-xl border border-[#20242E] bg-[#111318] p-3">
                                 {/* image */}
-                                <div className="relative h-[54] w-[100] shrink-0 overflow-hidden rounded-lg">
+                                <div className="relative h-[60] w-[90] shrink-0 overflow-hidden rounded-lg sm:h-[54] sm:w-[#100]">
                                     <Image
                                         src={library.image}
                                         alt={library.name}
@@ -220,11 +220,12 @@ const MyPlanPage = () => {
                                         {library.name}
                                     </h2>
 
-                                    <p className="truncate text-xl text-[#9CA3AF]">
+                                    <p className="mt-0.5 truncate text-xs text-[#9CA3AF] sm:text-sm">
                                         {library.equipment}
                                     </p>
 
-                                    <div className="mt-1 flex  items-center gap-3 text-sm text-[#9CA3AF]">
+                                    <div className="mt-1.5 flex flex-wrap items-center gap-3 gap-y-1 
+                                    text-sm text-[#9CA3AF] sm:text-xs">
                                         <span className="flex items-center gap-1">
                                             <MdOutlineAccessTime
                                                 size={11}
@@ -249,7 +250,8 @@ const MyPlanPage = () => {
                                 </div>
 
                                 {/* action */}
-                                <div className="flex shrink-0 items-center gap-2">
+                                <div className="mt-3 flex w-full items-center gap-2 border-t border-[#20242E] 
+                                pt-3 sm:mt-0 sm:w-auto sm:border-0 sm:pt-0">
                                     {/* view details */}
                                     <Link
                                         href={`/librarycardDetails/${library.id}`}
