@@ -11,7 +11,7 @@ const Navbar = () => {
     const pathname = usePathname();
 
     const isWorkoutActive = pathname === "/";
-    const isMyPlanActive = pathname === "/my-plan"
+    const isMyPlanActive = pathname === "/My-plan"
 
     return (
         <nav className="sticky top-0 bg-[#0C0D10] border border-gray-800 shadow-lg">
@@ -37,7 +37,7 @@ const Navbar = () => {
                             </li>
 
                             <li>
-                                <Link href="/My Plan"
+                                <Link href="/My-Plan"
                                 className={`px-7 py-7 rounded-full text-sm transition
                                  ${isMyPlanActive 
                                     ? "bg-[#172408] text-[#ccff00]"
@@ -67,7 +67,7 @@ const Navbar = () => {
                             >Workout</Link>
                         </li>
                         <li>
-                            <Link href="/my-plan"
+                            <Link href="/My-Plan"
                             className={`px-3 py-1 rounded-full text-sm transition
                                  ${isMyPlanActive 
                                     ? "bg-[#172408] text-[#ccff00]"
@@ -79,12 +79,12 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end gap-4">
 
-                    <Link href="/my-plan"
+                    <Link href="/My-plan"
                         className=" flex items-center gap-2">
                         <span>Plan</span>
                         <span className="rounded-full bg-[#ccff00] px-2 text-black font-bold">0</span>
                     </Link>
-                    <Link href="/my-plan"
+                    <Link href="/My-plan"
                         className=" flex items-center gap-2">
                         <span>Saved</span>
                         <span className="rounded-full px-2 border border-[#2D313B] text-[#D1D5DB] ">0</span>
