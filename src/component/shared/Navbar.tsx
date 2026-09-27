@@ -4,7 +4,7 @@ import Link from 'next/link';
 import logo from "@/assets/logo.png";
 
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import React  from 'react';
 import { usePlan } from '@/context/PlanContext';
 
 
@@ -14,6 +14,7 @@ const Navbar = () => {
     const isWorkoutActive = pathname === "/";
     const isMyPlanActive = pathname === "/My-plan"
     const {plan , saved} = usePlan();
+
 
     return (
         <nav className="sticky top-0 bg-[#0C0D10] border border-gray-800 shadow-lg">

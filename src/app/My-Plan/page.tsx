@@ -1,13 +1,15 @@
 "use client";
 import React, { useState } from 'react';
 import { usePlan } from '@/context/PlanContext';
-import { MdOutlineAccessTime } from 'react-icons/md';
+import { MdOutlineAccessTime, MdOutlineStarBorder } from 'react-icons/md';
 import { FaCheck, FaFire } from 'react-icons/fa';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaXmark } from 'react-icons/fa6';
 
+
 type Tab = "plan" | "saved";
+type SortOption = "Duration" | "Calories" | "Rating";
 
 const MyPlanPage = () => {
     const {
@@ -16,25 +18,42 @@ const MyPlanPage = () => {
         removeFromPlan,
         removeSaved,
         markAsDone,
+        doneIds,
         isLoaded
 
     } = usePlan();
 
     const [activeTab, setActiveTab] = useState<Tab>("plan");
-    const currentWorkouts = activeTab === "plan" ? plan: saved ;
+    const [sortBy, setSortBy] = useState<SortOption>("Duration")
 
-    const totalMinutes =plan.reduce(
-        (total , workout) => total + Number(workout.duration || 0),
+    const currentWorkouts = activeTab === "plan" ? plan : saved;
+
+    const sortedWorkouts = [...currentWorkouts].sort((a, b) => {
+        if (sortBy === "Duration") {
+            return Number(a.duration || 0) - Number(b.duration || 0);
+        }
+        if (sortBy === "Calories") {
+            return Number(b.caloriesBurned || 0) - Number(a.caloriesBurned || 0);
+        }
+        if (sortBy === "Rating") {
+            return Number(b.rating || 0) - Number(a.rating || 0);
+        }
+        return 0;
+
+    });
+
+    const totalMinutes = plan.reduce(
+        (total, workout) => total + Number(workout.duration || 0),
         0
     );
-    const totalCalories =plan.reduce(
-        (total , workout) => total + Number(workout.caloriesBurned || 0),
+    const totalCalories = plan.reduce(
+        (total, workout) => total + Number(workout.caloriesBurned || 0),
         0
     );
     // loading
 
-    if(!isLoaded) {
-        return(
+    if (!isLoaded) {
+        return (
             <main className="min-h-screen bg-[#0B0D10] px-4 py-16 text-white">
                 <div className="mx-auto max-w-7xl">
                     <p className="text-center text-sm text-[#9CA3AF]">
@@ -46,219 +65,235 @@ const MyPlanPage = () => {
     }
 
     return (
-        <main className="min-h-screen bg-[#0B0D10] px-4 py-12 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+        <main className="min-h-screen bg-[#0B0D10] px-4 py-10 text-white sm:px-6 lg:px-8">
 
-            <h1 className="oswald-font text-4xl font-black tracking-wide sm:text-5xl">
-                My Plan
-            </h1>
-            <p className="mt-2 text-sm text-[#9CA#AF] sm:text-base">
-                Cap of five lifts for today. Finish them, then load more.
-            </p>
-        </div>
-        {/* metrics */}
-        <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {/* exercise */}
-            <div className="rounded-2xl border border-[#20242E] bg-[#111318] p-5">
-                <p className="text-xs font-bold uppercase tracking-wide text-[#6B7280)]">
-                    Exercises
-                </p>
-                <h2 className="mt-3 text-3xl font-black">
-                    {plan.length}
-                </h2>
-            </div>
-            {/* minutes */}
-            <div className="rounded-full border border-[#20242E] bg-[#111318] p-5">
-                <p className="text-xs font-bold uppercase tracking-wide text-[#6B7280]">
-                    Minutes
-                </p>
 
-                <div className= "mt-3 flex items-center justify-between"> 
-                    <h2 className="text-3xl font-black">
-                        {totalMinutes}
-                    </h2>
-                    <MdOutlineAccessTime
-                    size={24}
-                    className="text-[#C2F800]" 
-                    />
-                </div>
-            </div>
-            {/* calories */}
-                  <div className="rounded-full border border-[#20242E] bg-[#111318] p-5">
-                <p className="text-xs font-bold uppercase tracking-wide text-[#6B7280]">
-                    Calories
+            {/* header */}
+            <div className="mb-7">
+                <h1 className="oswald-font text-xl font-black tracking-wide sm:text-4xl">
+                    My Plan
+                </h1>
+                <p className="mt-2 mb-2 text-sm text-[#9CA#AF] sm:text-base">
+                    Cap of five lifts for today. Finish them, then load more.
                 </p>
+            </div>
 
-                <div className= "mt-3 flex items-center justify-between"> 
-                    <h2 className="text-3xl font-black">
-                        {totalCalories}
-                    </h2>
-                    <FaFire
-                    size={21}
-                    className="text-[#C2F800]" />
-                </div>
-            </div>
-            {/* tab */}
-            <div className="mb-8 border-b border-[#20242E]">
-                <div className="flex gap-7">
-                    <button
-                    onClick={()=> setActiveTab("plan")}
-                    className={`relative pb-4 text-sm font-bold ${
-                        activeTab === "plan"
-                        ? "text-[#C2F800]"
-                        : "text-[#6B7280]"
-                    }`}>
-                        Todays Plan
-                        {plan.length > 0 && (
-                            <span className="ml-2 rounded-full bg-[#C2F800] px-2 py-0.5 text-xs text-black">
-                                {plan.length}
-                            </span>
-                        )}
-                        {activeTab === "plan" && (
-                            <span className="absolute bottom-0 left-0 h-[2] w-full bg-[#C2F800]"/>
-                        )}
-                    </button>
-                    <button
-                    onClick={()=> setActiveTab("saved")}
-                    className={`relative pb-4 text-sm font-bold ${
-                        activeTab === "saved"
-                        ? "text-[#C2F800]"
-                        : "text-[#6B7280]"
-                    }`}>
-                        Saved
-                        {saved.length > 0 && (
-                            <span className="ml-2 rounded-full bg-[#C2F800] px-2 py-0.5 text-xs text-black">
-                                {saved.length}
-                            </span>
-                        )}
-                        {activeTab === "saved" && (
-                            <span className="absolute bottom-0 left-0 h-[2] w-full bg-[#C2F800]"/>
-                        )}
-                    </button>
-                </div>
-            </div>
-            {/* empty state */}
-            {currentWorkouts.length === 0 ? (
-                <div className=" flex min-h-[420] flex-col items-center justify-center rounded-2xl border border-[#20242E]bg-[#111318] px-5 text-center">
-                    <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#1B1F25]">
-                        <span className="text-3xl text-[#C2F800]">
-                            +
-                        </span>
+            {/* metrics */}
+
+            <div className="mb-6 overflow-hidden rounded-xl border border-[#20242F] bg-[#111318]">
+                <div className="grid grid-cols-1 divide-y divide-[#20242E] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                    {/* exercise */}
+
+                    <div className="px-5 py-5 sm:px-6">
+                        <p className="text-xs text-[#6B7280]">
+                            Exercises
+                        </p>
+                        <h2 className="mt-2 text-3xl font-black text-[#C2F800]">
+                            {plan.length}
+                        </h2>
                     </div>
-                    <h2 className="oswald-font text-[#FFFFFF] text-2xl">
+                    {/* minutes */}
+
+                    <div className="px-5 py-5 sm:px-6">
+                        <p className="text-xs text-[#6B7280]">
+                            Minutes
+                        </p>
+                        <h2 className=" mt-2 text-3xl font-black">
+                            {totalMinutes}
+                        </h2>
+                    </div>
+                    {/* calories */}
+
+                    <div className="px-5 py-5 sm:px-6">
+
+                        <p className="text-xs text-[#6B7280]">
+                            Calories
+                        </p>
+                        <h2 className=" mt-2 text-3xl font-black">
+                            {totalCalories}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+
+            {/* tab */}
+            <div className="mb-4 flex items-center justify-between gap-4">
+                <div className="flex rounded-lg border border-[#20242E] bg-[#111318] p-1">
+                    <button
+                        onClick={() => setActiveTab("plan")}
+                        className={`rounded-md px-4 py-2 text-xs font-bold transition
+                                ${activeTab === "plan"
+                                ? " bg-[#1B1F25] text-white"
+                                : "text-[#6B7280] hover:text-white"
+                            }`}>
+                        Todays Plan
+
+                        <span className={`ml-2 rounded-full px-1.5 py-0.5 text-[10]
+                        ${activeTab === "plan"
+                                ? "bg-[#C2F800] text-black"
+                                : "bg-[#20242E] text-[#9CA3AF]"}`}>
+                            {plan.length}
+                        </span>
+                    </button>
+
+                    <button
+                        onClick={() => setActiveTab("saved")}
+                        className={`rounded-md px-4 py-2 text-xs font-bold transition
+                                ${activeTab === "saved"
+                                ? "bg-[#1B1F25] text-white"
+                                : "text-[#6B7280] hover:text-white"
+                            }`}>
+                        Saved
+                        <span className={`ml-2 rounded-full px-1.5 py-0.5 text-[10]
+                        ${activeTab === "saved"
+                                ? "bg-[#C2F800] text-black"
+                                : "bg-[#20242E] text-[#9CA3AF]"}`}>
+                            {saved.length}
+                        </span>
+                    </button>
+                </div>
+
+                {/* sort */}
+                <div className="flex items-center gap-2">
+                    <span className="text-xs text-[#8A92A0]">
+                        Sort By</span>
+
+                    <div className="relative">
+
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value as SortOption)}
+                            className="h-7 w-[64] appearence-none rounded-md border border-[#20242E] bg-[#111318]
+                            px-2 pr-5 text-xs text-[#FFFFFF] outline-none cursor-pointer">
+
+                            <option value="Duration">Duration</option>
+                            <option value="Calories">Calories</option>
+                            <option value="Rating">Rating</option>
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+
+            {/* empty state */}
+
+            {currentWorkouts.length === 0 ? (
+                <div className=" flex min-h-[280] flex-col items-center justify-center rounded-xl border border-dashed
+                     border-[#272c35] bg-[#0F1115] px-5 text-center">
+                    <h2 className="oswald-font uppercase font-black text-[#FFFFFF] text-2xl">
                         NOTHING HERE YET
                     </h2>
-                    <p className="mt-6 text-sm text-[#A1A1AA]">
+                    <p className="mt-2 text-xs text-[#A1A1AA]">
                         Browse the library and add a lift to get today moving.
                     </p>
                     <Link
-                    href="/"
-                    className="mt-6 rounded-xl bg-[#C2F800] px-6 py-3 text-sm
-                     font-black text-black hover:bg-[#d4ff4d]">
+                        href="/"
+                        className="mt-5 mb-2 rounded-full bg-[#C2F10D] px-6 py-2.5 text-xs transition
+                     font-black text-[#000000] hover:bg-[#D4FF4D]">
                         Go to workouts
                     </Link>
                 </div>
             ) : (
                 // workout card
-                <div className="space-y-4">
-                    {currentWorkouts.map((library) => (
-                        <div 
-                         key={library.id}
-                            className = "overflow-hidden rounded-2xl border border-[#20242E] bg-[#111318]">
+                <div className="space-y-3">
+                    {sortedWorkouts.map((library) => {
+                        const isDone =
+                            activeTab === "plan" &&
+                            doneIds.includes(library.id);
+
+                        return (
+                            <div
+                                key={library.id}
+                                className="flex h-[78] w-full items-center rounded-xl border border-[#20242E] bg-[#111318] px-3">
                                 {/* image */}
-                                <div className="relative h-56 w-full shrink-0 md:h-auto md:w-64">
+                                <div className="relative h-[54] w-[100] shrink-0 overflow-hidden rounded-lg">
                                     <Image
-                                    src={library.image}
-                                    alt={library.name}
-                                    fill
-                                    sizes="(max-width: 768) 100vw, 256px" 
-                                    className = "object-cover"/>
+                                        src={library.image}
+                                        alt={library.name}
+                                        fill
+                                        sizes="100px"
+                                        className="object-cover" />
                                 </div>
                                 {/* content */}
-                                <div className="flex flex-1 flex-col justify-between p-5 sm:p-6">
-                                    <div>
-                                        {/* muscle group */}
-                                        <div className="mb-3 flex flex-wrap gap-2">
-                                            {library.muscleGroups?.map((muscleGroup) => (
-                                                <span 
-                                                key={muscleGroup}
-                                                className="rounded-full bg-[#C2F800] px-2.5 py-1 text-xl font-black text-black">
-                                                    {muscleGroup}
-                                                </span>
-                                            ))}
-                                        </div>
-                                        {/* name */}
-                                        <h2 className="oswald-font text-2xl font-black uppercase">
-                                            {library.name}
-                                        </h2>
-                                        <p className="mt-1 text-sm text-[#9CA3AF]">
-                                            {library.equipment}
-                                        </p>
-                                        {/* state */}
-                                        <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-[#20242E]
-                                        pt-4 text-sm text-[#9CA3AF]">
-                                            <span className="flex items-center gap-1.5">
-                                                <MdOutlineAccessTime 
-                                                size={19}/>
-                                                {library.duration} min 
-                                            </span>
+                                <div className="flex-1 px-3 min-w-0">
+                                    <h2 className="oswald-font truncate text-[12] font-black uppercase">
+                                        {library.name}
+                                    </h2>
 
-                                            <span className="flex items-center gap-1.5">
-                                                <FaFire 
-                                                size={16}/>
-                                                {library.caloriesBurned} Kcal 
-                                            </span>
-                                            <span className="flex items-center gap-1.5">
-                                                <MdOutlineAccessTime 
-                                                size={21}/>
-                                                {library.rating} 
-                                            </span>
-                                        </div>
+                                    <p className="truncate text-xl text-[#9CA3AF]">
+                                        {library.equipment}
+                                    </p>
+
+                                    <div className="mt-1 flex  items-center gap-3 text-sm text-[#9CA3AF]">
+                                        <span className="flex items-center gap-1">
+                                            <MdOutlineAccessTime
+                                                size={11}
+                                                className="text-[#C2F800]" />
+                                            {library.duration} min
+                                        </span>
+
+                                        <span className="flex items-center gap-1">
+                                            <FaFire
+                                                size={9}
+                                                className="text-[#C2F800]" />
+                                            {library.caloriesBurned} Kcal
+                                        </span>
+
+                                        <span className="flex items-center gap-1.5">
+                                            <MdOutlineStarBorder
+                                                size={12}
+                                                className="text-[#C2F800]" />
+                                            {library.rating}
+                                        </span>
                                     </div>
-                                    {/* button */}
-                                    <div className="mt-6 flex flex-wrap items-center gap-3">
-                                        <Link
-                                        href={`/library/${library.id}`}
-                                        className="rounded-lg border border-[#353A44] px-4 py-2.5 text-xs 
-                                        font-blod text-white hover:border-[#C2F800] hover:text-[#C2F800]">
-                                            View Details
-                                        </Link>
-                                        {/* mark done */}
-                                        {activeTab === "plan" && (
-                                            <button
-                                            onClick={() => markAsDone(library.id)}
-                                            className="flex items-center gap-2 rounded-lg px-4 py-2.5 text-xs 
-                                        font-black text-black bg-[#C2F800] hover:bg-[#C2F800]">
-                                            <FaCheck 
-                                            size={12}/>
-                                            Mark as Done
-                                            </button>
-                                        )}
-                                        {/* remove */}
-                                        <button
-                                        onClick={() =>
-                                            activeTab === "plan"
-                                            ? removeFromPlan(library.id)
-                                            : removeSaved(library.id)
-                                        }
-                                        className="flex h-10 w-10 items-center justify-center rounded-lg border
-                                        border-[#353A44] text-[#9CA3AF] hover:border-red-500 hover:text-red-500"
-                                        aria-label="Remove workout">
-                                            <FaXmark size={15}/>
-                                        </button>
-
-
-                                    </div>
-
                                 </div>
-                           
-                        </div>
-                    ))}
 
+                                {/* action */}
+                                <div className="flex shrink-0 items-center gap-2">
+                                    {/* view details */}
+                                    <Link
+                                        href={`/librarycardDetails/${library.id}`}
+                                        className="rounded-full border border-[#353A44] px-3 py-1.5 text-xs 
+                                        text-[#D1D5DB] transition hover:border-[#C2F800] hover:text-[#C2F800]">
+                                        View Details
+                                    </Link>
+
+                                    {/* mark done */}
+                                    {activeTab === "plan" && !isDone && (
+                                        <button
+                                            onClick={() => markAsDone(library.id)}
+                                            className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs 
+                                        font-black text-black bg-[#C2F800] hover:bg-[#C2F800]">
+                                            <FaCheck
+                                                size={8} />
+                                            Mark as Done
+                                        </button>
+                                    )}
+                                    {/* remove */}
+                                    <button
+                                        onClick={() => {
+                                            if (activeTab === "plan") {
+                                                if (isDone) {
+                                                    removeFromPlan(library.id);
+                                                }
+                                            } else {
+                                                removeSaved(library.id);
+                                            }
+                                        }}
+                                        disabled={activeTab === "plan" && !isDone}
+                                        className={`flex h-7 w-7 items-center justify-center rounded-full ${activeTab === "plan" && !isDone
+                                            ? "cursor-not-allowed text-[#353A44]"
+                                            : "text-[#6B7280] hover:text-red-500"
+                                            }`}
+                                    >
+                                        <FaXmark size={12} />
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             )}
-
-        </div>
         </main>
     );
 };
